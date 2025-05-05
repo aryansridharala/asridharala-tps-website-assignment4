@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WellnessCheck+ Registration</title>
+  <link rel="stylesheet" href="styles.css" />
+  
+  <style>
+    /* Fixed Header and Footer Styles */
+    .fixed-header {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      z-index: 1000 !important;
+    }
+    
+    .header-frame {
+      width: 100% !important;
+      height: 80px !important;
+      border: none !important;
+      overflow: hidden !important;
+    }
+    
+    body {
+      padding-top: 90px !important; /* Match the height of your header */
+      padding-bottom: 60px !important; /* Match the height of your footer */
+      margin: 0 !important;
+    }
+    
+    footer {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      width: 100% !important;
+      background-color: #2a7a7b !important;
+      color: white !important;
+      text-align: center !important;
+      padding: 10px 0 !important;
+      z-index: 1000 !important;
+    }
+    
+    /* Additional styles */
+    #notYouContainer {
+      display: none;
+      margin-top: 10px;
+      padding: 8px;
+      background-color: #f0f4f8;
+      border-radius: 4px;
+    }
+    
+    .form-options {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f0f4f8;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Header with iFrame -->
+  <div class="fixed-header">
+    <iframe src="header-3.html" class="header-frame" id="headerFrame"></iframe>
+  </div>
+
+  <header class="banner">
+    <h1>WellnessCheck+ Registration</h1>
+    <p>Your Gateway to Personalized Healthcare Solutions</p>
+    <p>Date: <span id="currentDate"></span></p>
+  </header>
+
+  <main>
+    <form id="registrationForm" novalidate>
+      <table class="formtable">
+        <tr><th colspan="4">Personal Information</th></tr>
+        <tr>
+          <td><label for="fname">First Name</label></td>
+          <td><div class="input-group"><input type="text" id="fname" name="fname" title="1-30 characters; letters, apostrophes and dashes only" oninput="validateFirstName()"><div id="fnameError" class="error-message"></div></div></td>
+          <td><label for="mname">Middle Initial</label></td>
+          <td><div class="input-group"><input type="text" id="mname" name="mname" title="Single letter only (optional)"><div id="mnameError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="lname">Last Name</label></td>
+          <td colspan="3"><div class="input-group"><input type="text" id="lname" name="lname" title="1-30 characters; letters, apostrophes and dashes only" oninput="validateLastName()"><div id="lnameError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="dob">Date of Birth</label></td>
+          <td colspan="3"><div class="input-group"><input type="date" id="dob" name="dob" title="Must be a valid date, not in the future or >120 years ago"><div id="dobError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="ssn">Social Security Number (or 9-digit ID)</label></td>
+          <td colspan="3"><div class="input-group"><input type="password" id="ssn" name="ssn" title="9 digits only" maxlength="11"><div id="ssnError" class="error-message"></div></div></td>
+        </tr>
+        <tr><th colspan="4">Contact Information</th></tr>
+        <tr>
+          <td><label for="email">Email</label></td>
+          <td colspan="3"><div class="input-group"><input type="email" id="email" name="email" title="name@domain.tld" oninput="validateEmail()"><div id="emailError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="phone">Mobile Number</label></td>
+          <td colspan="3"><div class="input-group"><input type="tel" id="phone" name="phone" title="Format: 123-456-7890" oninput="validatePhone()"><div id="phoneError" class="error-message"></div></div></td>
+        </tr>
+        <tr><th colspan="4">Address</th></tr>
+        <tr>
+          <td><label for="address1">Address Line 1</label></td>
+          <td colspan="3"><div class="input-group"><input type="text" id="address1" name="address1" title="2-30 characters required"><div id="address1Error" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="address2">Address Line 2</label></td>
+          <td colspan="3"><div class="input-group"><input type="text" id="address2" name="address2" title="Optional; if filled, must be 2-30 characters"><div id="address2Error" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="city">City</label></td>
+          <td><div class="input-group"><input type="text" id="city" name="city" title="2-30 letters allowed"><div id="cityError" class="error-message"></div></div></td>
+          <td><label for="state">State</label></td>
+          <td><div class="input-group"><select id="state" name="state" title="Please select your state"><option value="">Select State</option></select><div id="stateError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="zip">Zip Code</label></td>
+          <td colspan="3"><div class="input-group"><input type="text" id="zip" name="zip" title="5 digits required"><div id="zipError" class="error-message"></div></div></td>
+        </tr>
+        <tr><th colspan="4">Preferences</th></tr>
+        <tr>
+          <td>Vaccination Status</td>
+          <td colspan="3">
+            <label><input type="radio" name="vaccinated" value="yes"> Yes</label>
+            <label><input type="radio" name="vaccinated" value="no"> No</label>
+            <label><input type="radio" name="vaccinated" value="unsure"> Unsure</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Health Conditions</td>
+          <td colspan="3">
+            <label><input type="checkbox" name="condition" value="chickenpox"> Chickenpox</label>
+            <label><input type="checkbox" name="condition" value="measles"> Measles</label>
+            <label><input type="checkbox" name="condition" value="covid"> Covid-19</label>
+            <label><input type="checkbox" name="condition" value="asthma"> Asthma</label>
+            <label><input type="checkbox" name="condition" value="diabetes"> Diabetes</label>
+          </td>
+        </tr>
+        <tr>
+          <td>Insurance Coverage</td>
+          <td colspan="3">
+            <input type="range" id="salary" name="salary" min="20000" max="200000" step="1000" oninput="updateSalaryDisplay(this.value)">
+            <span id="salaryDisplay">$110,000</span>
+          </td>
+        </tr>
+        <tr><th colspan="4">Account Setup</th></tr>
+        <tr>
+          <td><label for="userid">User ID</label></td>
+          <td colspan="3"><div class="input-group"><input type="text" id="userid" name="userid" title="5-20 chars, no spaces or special symbols; can't start with a number" oninput="validateUserID()"><div id="useridError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="password">Password</label></td>
+          <td colspan="3"><div class="input-group"><input type="password" id="password" name="password" title="8+ chars, 1 uppercase, 1 lowercase, 1 digit" oninput="validatePassword()"><div id="passwordError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="confirm">Confirm Password</label></td>
+          <td colspan="3"><div class="input-group"><input type="password" id="confirm" name="confirm" title="Must match password" oninput="validateConfirmPassword()"><div id="confirmError" class="error-message"></div></div></td>
+        </tr>
+        <tr>
+          <td><label for="notes">Additional Notes</label></td>
+          <td colspan="3"><textarea id="notes" name="notes" rows="4" title="Optional. Avoid special characters." placeholder="Share anything else you'd like us to know..."></textarea></td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-center">
+            <button type="button" onclick="validateAllFields()">Validate</button>
+            <button type="submit" id="finalSubmit" style="display: none">Submit</button>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Cookie Functionality Options -->
+      <div class="form-options">
+        <label class="option-item"><input type="checkbox" id="remember" checked> Remember Me (saves your information for 48 hours)</label>
+        
+        <div id="notYouContainer">
+          <label class="option-item"><input type="checkbox" id="notYou"> Not you? Click here to start as a new user</label>
+        </div>
+      </div>
+    </form>
+  </main>
+  
+  <!-- iFrame Example in Body -->
+  <div class="iframe-container">
+    <h3>Need Help? Check our Guide Below:</h3>
+    <iframe src="help.html" width="100%" height="300" style="border: 1px solid #ccc; margin-top: 10px;"></iframe>
+  </div>
+
+  <!-- Fixed Footer -->
+  <footer>
+    <p>&copy; 2025 WellnessCheck+. All rights reserved.</p>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Header Frame</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 10px;
+      background-color: #2a7a7b;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    #new-user-message {
+      margin-top: 5px;
+      font-size: 14px;
+    }
+    span#user-name {
+      font-weight: bold;
+      color: #ffeb3b;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="userStatus">Welcome New User</h1>
+  <div id="new-user-message"></div>
+
+  <script>
+    // Function to log messages (helps with debugging)
+    function logMessage(msg) {
+      console.log("Header iframe: " + msg);
+    }
+    
+    // Listen for messages from the parent window
+    window.addEventListener("message", function(event) {
+      logMessage("Received message from parent: " + JSON.stringify(event.data));
+      
+      const statusEl = document.getElementById("userStatus");
+      const messageEl = document.getElementById("new-user-message");
+      
+      if (event.data && event.data.firstName && event.data.firstName.trim() !== "") {
+        // Update the welcome message with the user's name
+        statusEl.textContent = "Welcome back, " + event.data.firstName + "!";
+        messageEl.textContent = "Not you? Check the box below to start as a new user.";
+        logMessage("Updated to welcome returning user: " + event.data.firstName);
+      } else {
+        // Reset to new user message
+        statusEl.textContent = "Welcome New User";
+        messageEl.textContent = "";
+        logMessage("Reset to welcome new user");
+      }
+    });
+    
+    // When the iframe is fully loaded, notify the parent window
+    window.onload = function() {
+      logMessage("Header iframe loaded, notifying parent");
+      // Let parent know we're ready to receive data
+      if (window.parent) {
+        window.parent.postMessage({ type: "headerReady" }, "*");
+        logMessage("Sent headerReady message to parent");
+      }
+    };
+  </script>
+</body>
+</html>
